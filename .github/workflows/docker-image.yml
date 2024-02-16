@@ -1,0 +1,88 @@
+name: container-images-build-dotnet8
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  #
+  DIR_WEBAPP: './SiteContagem'
+
+jobs:
+
+  build-push:
+
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_DOCKERHUB: ${{ secrets.DOCKERHUB_USERNAME }}/apicontagem-dotnet8-imagemnormal
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build de imagem
+      run: |
+        cd ${{ env.DIR_WEBAPP }}
+        docker build . --file Dockerfile --tag ${{ env.IMAGE_DOCKERHUB }}:latest      
+    - name: Login no Docker Hub
+      uses: docker/login-action@v3.0.0
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: Geração de tag com número do Build e Push no Docker Hub
+      run: |
+        docker tag ${{ env.IMAGE_DOCKERHUB }}:latest ${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
+        docker push --all-tags ${{ env.IMAGE_DOCKERHUB }}
+    - name: Exibir imagens geradas
+      run: docker images
+
+  build-push-alpine:
+
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_DOCKERHUB: ${{ secrets.DOCKERHUB_USERNAME }}/apicontagem-dotnet8-alpine
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build de imagem
+      run: |
+        cd ${{ env.DIR_WEBAPP }}
+        docker build . --file Dockerfile-alpine --tag ${{ env.IMAGE_DOCKERHUB }}:latest      
+    - name: Login no Docker Hub
+      uses: docker/login-action@v3.0.0
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: Geração de tag com número do Build e Push no Docker Hub
+      run: |
+        docker tag ${{ env.IMAGE_DOCKERHUB }}:latest ${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
+        docker push --all-tags ${{ env.IMAGE_DOCKERHUB }}
+    - name: Exibir imagens geradas
+      run: docker images
+
+  build-push-chiseled:
+
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_DOCKERHUB: ${{ secrets.DOCKERHUB_USERNAME }}/apicontagem-dotnet8-chiseled
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build de imagem
+      run: |
+        cd ${{ env.DIR_WEBAPP }}
+        docker build . --file Dockerfile-chiseled --tag ${{ env.IMAGE_DOCKERHUB }}:latest      
+    - name: Login no Docker Hub
+      uses: docker/login-action@v3.0.0
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: Geração de tag com número do Build e Push no Docker Hub
+      run: |
+        docker tag ${{ env.IMAGE_DOCKERHUB }}:latest ${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
+        docker push --all-tags ${{ env.IMAGE_DOCKERHUB }}
+    - name: Exibir imagens geradas
+      run: docker images
