@@ -16,14 +16,14 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_DOCKERHUB: ${{ secrets.DOCKERHUB_USERNAME }}/apicontagem-dotnet8-imagemnormal
+      IMAGE_DOCKERHUB: apicontagem-dotnet8-imagemnormal
 
     steps:
     - uses: actions/checkout@v3
     - name: Build de imagem
       run: |
         cd ${{ env.DIR_WEBAPP }}
-        docker build . --file Dockerfile --tag ${{ env.IMAGE_DOCKERHUB }}:latest      
+        docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:latest      
     - name: Login no Docker Hub
       uses: docker/login-action@v3.0.0
       with:
@@ -31,8 +31,8 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     - name: Geração de tag com número do Build e Push no Docker Hub
       run: |
-        docker tag ${{ env.IMAGE_DOCKERHUB }}:latest ${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
-        docker push --all-tags ${{ env.IMAGE_DOCKERHUB }}
+        docker tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
+        docker push --all-tags ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}
     - name: Exibir imagens geradas
       run: docker images
 
@@ -41,14 +41,14 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_DOCKERHUB: ${{ secrets.DOCKERHUB_USERNAME }}/apicontagem-dotnet8-alpine
+      IMAGE_DOCKERHUB: apicontagem-dotnet8-alpine
 
     steps:
     - uses: actions/checkout@v3
     - name: Build de imagem
       run: |
         cd ${{ env.DIR_WEBAPP }}
-        docker build . --file Dockerfile-alpine --tag ${{ env.IMAGE_DOCKERHUB }}:latest      
+        docker build . --file Dockerfile-alpine --tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:latest      
     - name: Login no Docker Hub
       uses: docker/login-action@v3.0.0
       with:
@@ -56,7 +56,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     - name: Geração de tag com número do Build e Push no Docker Hub
       run: |
-        docker tag ${{ env.IMAGE_DOCKERHUB }}:latest ${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
+        docker tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
         docker push --all-tags ${{ env.IMAGE_DOCKERHUB }}
     - name: Exibir imagens geradas
       run: docker images
@@ -66,14 +66,14 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_DOCKERHUB: ${{ secrets.DOCKERHUB_USERNAME }}/apicontagem-dotnet8-chiseled
+      IMAGE_DOCKERHUB: apicontagem-dotnet8-chiseled
 
     steps:
     - uses: actions/checkout@v3
     - name: Build de imagem
       run: |
         cd ${{ env.DIR_WEBAPP }}
-        docker build . --file Dockerfile-chiseled --tag ${{ env.IMAGE_DOCKERHUB }}:latest      
+        docker build . --file Dockerfile-chiseled --tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:latest      
     - name: Login no Docker Hub
       uses: docker/login-action@v3.0.0
       with:
@@ -81,7 +81,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     - name: Geração de tag com número do Build e Push no Docker Hub
       run: |
-        docker tag ${{ env.IMAGE_DOCKERHUB }}:latest ${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
+        docker tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
         docker push --all-tags ${{ env.IMAGE_DOCKERHUB }}
     - name: Exibir imagens geradas
       run: docker images
