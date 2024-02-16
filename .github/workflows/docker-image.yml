@@ -57,7 +57,7 @@ jobs:
     - name: Geração de tag com número do Build e Push no Docker Hub
       run: |
         docker tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
-        docker push --all-tags ${{ env.IMAGE_DOCKERHUB }}
+        docker push --all-tags ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}
     - name: Exibir imagens geradas
       run: docker images
 
@@ -82,6 +82,6 @@ jobs:
     - name: Geração de tag com número do Build e Push no Docker Hub
       run: |
         docker tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
-        docker push --all-tags ${{ env.IMAGE_DOCKERHUB }}
+        docker push --all-tags ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_DOCKERHUB }}
     - name: Exibir imagens geradas
       run: docker images
